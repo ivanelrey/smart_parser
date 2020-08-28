@@ -1,3 +1,6 @@
+require './lib/log_file/validators/ip_validator'
+require './lib/log_file/validators/web_page_validator'
+
 module LogFile
   UnparsableLineError = Class.new(StandardError)
 
