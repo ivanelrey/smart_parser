@@ -21,6 +21,9 @@ require './lib/log_file/validators/ip_validator'
 require './lib/log_file/validators/web_page_validator'
 require './lib/log_file/presenters/counter_presenter'
 
+require 'simplecov'
+SimpleCov.start
+
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
