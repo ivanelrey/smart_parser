@@ -1,5 +1,6 @@
 require './lib/log_file/line'
 require './lib/log_file/counter'
+require './lib/log_file/presenters/counter_presenter'
 
 class Application
   def run(file_name)
@@ -9,9 +10,8 @@ class Application
     counter = LogFile::Counter.new
     parse_file(file_name, counter)
 
-    total_visits = counter.visits_per_web_page.map { |key, value| [key, value[:total_visits]] }.sort_by { |_x, y| -y }
-    uniq_visits = counter.visits_per_web_page.map { |key, value| [key, value[:ip_list].count] }.sort_by { |_x, y| -y }
-    output_results(total_visits, uniq_visits)
+    counter_presenter = LogFile::Presenters::CounterPresenter.new(counter)
+    output_results(counter_presenter)
   end
 
   private
@@ -29,14 +29,14 @@ class Application
     end
   end
 
-  def output_results(total_visits, uniq_visits)
+  def output_results(counter_presenter)
     puts 'Most visited pages:'
-    total_visits.each do |web_page, count|
+    counter_presenter.most_visited_pages.each do |web_page, count|
       puts "#{web_page} -> #{count}"
     end
 
     puts 'Most uniq visits:'
-    uniq_visits.each do |web_page, count|
+    counter_presenter.most_uniq_visited_pages.each do |web_page, count|
       puts "#{web_page} -> #{count}"
     end
   end

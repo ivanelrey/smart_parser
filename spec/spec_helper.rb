@@ -19,6 +19,7 @@ require './lib/log_file/line'
 require './lib/log_file/counter'
 require './lib/log_file/validators/ip_validator'
 require './lib/log_file/validators/web_page_validator'
+require './lib/log_file/presenters/counter_presenter'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
