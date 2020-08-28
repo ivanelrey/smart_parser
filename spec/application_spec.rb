@@ -1,4 +1,5 @@
 require 'tempfile'
+require 'pry'
 
 RSpec.describe Application do
   let(:app) { described_class.new }
@@ -24,6 +25,22 @@ RSpec.describe Application do
 
       it 'outputs correct message' do
         expect { app.run(log_file) }.to output(expected_output).to_stdout
+      end
+    end
+
+    context 'when log_file contains invalid lines' do
+      let(:expected_output) { "Unparsable line detected on line: 2\n" }
+
+      before do
+        log_file.write("/home 111.111.111.111\n")
+        log_file.write('unparsable_line')
+        log_file.rewind
+      end
+
+      after { log_file.unlink }
+
+      it 'outputs error message and exits Application' do
+        expect { app.run(log_file) }.to output(expected_output).to_stdout.and raise_error(SystemExit)
       end
     end
   end
