@@ -2,13 +2,13 @@ require 'tempfile'
 require 'pry'
 
 RSpec.describe Application do
-  let(:app) { described_class.new }
+  let(:app) { described_class.new(log_file) }
   let(:log_file) { Tempfile.new('webserver.log') }
 
-  describe '#run' do
+  describe 'initialize' do
     context 'without file_name' do
       it 'raises an argument error with correct message' do
-        expect { app.run(nil) }.to raise_error(ArgumentError, 'Please provide a file name.')
+        expect { described_class.new(nil) }.to raise_error(ArgumentError, 'Please provide a file name.')
       end
     end
 
@@ -16,15 +16,19 @@ RSpec.describe Application do
       let(:ivalid_file_name) { 'not_existing_file.log' }
 
       it 'raises an argument error with correct message' do
-        expect { app.run(ivalid_file_name) }.to raise_error(ArgumentError, 'Please provide an existing file.')
+        expect do
+          described_class.new(ivalid_file_name)
+        end.to raise_error(ArgumentError, 'Please provide an existing file.')
       end
     end
+  end
 
+  describe '#run' do
     context 'when log_file is empty' do
       let(:expected_output) { "Most visited pages:\n\nMost uniq visits:\n" }
 
       it 'outputs correct message' do
-        expect { app.run(log_file) }.to output(expected_output).to_stdout
+        expect { app.run }.to output(expected_output).to_stdout
       end
     end
 
@@ -40,7 +44,7 @@ RSpec.describe Application do
       after { log_file.unlink }
 
       it 'outputs error message and exits Application' do
-        expect { app.run(log_file) }.to output(expected_output).to_stdout.and raise_error(SystemExit)
+        expect { app.run }.to output(expected_output).to_stdout.and raise_error(SystemExit)
       end
     end
 
@@ -56,7 +60,7 @@ RSpec.describe Application do
       after { log_file.unlink }
 
       it 'outputs error message and exits Application' do
-        expect { app.run(log_file) }.to output(expected_output).to_stdout.and raise_error(SystemExit)
+        expect { app.run }.to output(expected_output).to_stdout.and raise_error(SystemExit)
       end
     end
 
@@ -72,7 +76,7 @@ RSpec.describe Application do
       after { log_file.unlink }
 
       it 'outputs error message and exits Application' do
-        expect { app.run(log_file) }.to output(expected_output).to_stdout.and raise_error(SystemExit)
+        expect { app.run }.to output(expected_output).to_stdout.and raise_error(SystemExit)
       end
     end
 
@@ -87,7 +91,7 @@ RSpec.describe Application do
       after { log_file.unlink }
 
       it 'outputs correct results' do
-        expect { app.run(log_file) }.to output(expected_output).to_stdout
+        expect { app.run }.to output(expected_output).to_stdout
       end
     end
 
@@ -118,7 +122,7 @@ RSpec.describe Application do
       after { log_file.unlink }
 
       it 'outputs correct results ordered correctly' do
-        expect { app.run(log_file) }.to output(expected_output).to_stdout
+        expect { app.run }.to output(expected_output).to_stdout
       end
     end
   end

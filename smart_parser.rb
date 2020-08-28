@@ -2,5 +2,5 @@
 
 require './application'
 
-app = Application.new
-app.run(ARGV.first)
+app = Application.new(ARGV.first)
+app.run

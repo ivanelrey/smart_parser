@@ -3,12 +3,18 @@ require './lib/log_file/counter'
 require './lib/log_file/presenters/counter_presenter'
 
 class Application
-  def run(file_name)
+  attr_reader :file_name
+
+  def initialize(file_name)
     raise ArgumentError, 'Please provide a file name.' if file_name.nil?
     raise ArgumentError, 'Please provide an existing file.' unless File.exist?(file_name)
 
+    @file_name = file_name
+  end
+
+  def run
     counter = LogFile::Counter.new
-    parse_file(file_name, counter)
+    parse_file(counter)
 
     counter_presenter = LogFile::Presenters::CounterPresenter.new(counter)
     output_results(counter_presenter)
@@ -16,7 +22,7 @@ class Application
 
   private
 
-  def parse_file(file_name, counter)
+  def parse_file(counter)
     File.open(file_name).each_with_index do |line, index|
       begin
         log_file_line = LogFile::Line.new(line)
