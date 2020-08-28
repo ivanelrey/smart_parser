@@ -11,7 +11,7 @@ module LogFile
     def add_web_page_visit(web_page_string, ip_string)
       web_page_visit = visits_per_web_page[web_page_string]
 
-      web_page_visit[:ip_list].add(ip_string)
+      web_page_visit.fetch(:ip_list).add(ip_string)
       web_page_visit[:total_visits] += 1
     end
   end

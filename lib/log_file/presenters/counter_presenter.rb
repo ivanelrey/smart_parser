@@ -6,12 +6,12 @@ module LogFile
       end
 
       def most_visited_pages
-        total_visits = @counter.visits_per_web_page.map { |key, value| [key, value[:total_visits]] }
+        total_visits = @counter.visits_per_web_page.map { |key, value| [key, value.fetch(:total_visits)] }
         sort_array(total_visits)
       end
 
       def most_uniq_visited_pages
-        uniq_visits = @counter.visits_per_web_page.map { |key, value| [key, value[:ip_list].count] }
+        uniq_visits = @counter.visits_per_web_page.map { |key, value| [key, value.fetch(:ip_list).count] }
         sort_array(uniq_visits)
       end
 
