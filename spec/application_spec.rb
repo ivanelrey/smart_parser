@@ -3,7 +3,7 @@ require 'pry'
 
 RSpec.describe Application do
   let(:app) { described_class.new }
-  let(:log_file) { Tempfile.new('webserver.log', './spec/tmp/') }
+  let(:log_file) { Tempfile.new('webserver.log') }
 
   describe '#run' do
     context 'without file_name' do
