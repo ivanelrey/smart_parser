@@ -21,7 +21,7 @@ RSpec.describe Application do
     end
 
     context 'when log_file is empty' do
-      let(:expected_output) { "Most visited pages:\nMost uniq visits:\n" }
+      let(:expected_output) { "Most visited pages:\n\nMost uniq visits:\n" }
 
       it 'outputs correct message' do
         expect { app.run(log_file) }.to output(expected_output).to_stdout
@@ -77,7 +77,7 @@ RSpec.describe Application do
     end
 
     context 'when log_file contains one visit' do
-      let(:expected_output) { "Most visited pages:\n/home -> 1\nMost uniq visits:\n/home -> 1\n" }
+      let(:expected_output) { "Most visited pages:\n/home -> 1\n\nMost uniq visits:\n/home -> 1\n" }
 
       before do
         log_file.write("/home 111.111.111.111\n")
@@ -97,6 +97,7 @@ RSpec.describe Application do
         "/home -> 4\n"\
         "/about -> 2\n"\
         "/admin -> 1\n"\
+        "\n"\
         "Most uniq visits:\n"\
         "/home -> 3\n"\
         "/about -> 2\n"\

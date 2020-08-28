@@ -35,6 +35,7 @@ class Application
       puts "#{web_page} -> #{count}"
     end
 
+    puts "\n"
     puts 'Most uniq visits:'
     counter_presenter.most_uniq_visited_pages.each do |web_page, count|
       puts "#{web_page} -> #{count}"
