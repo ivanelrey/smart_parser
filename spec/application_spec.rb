@@ -43,5 +43,37 @@ RSpec.describe Application do
         expect { app.run(log_file) }.to output(expected_output).to_stdout.and raise_error(SystemExit)
       end
     end
+
+    context 'when log_file contains invalid web_page' do
+      let(:expected_output) { "Invalid WebPage or IP detected on line: 2\n" }
+
+      before do
+        log_file.write("/home 111.111.111.111\n")
+        log_file.write('invalid_web_page 222.222.222.222')
+        log_file.rewind
+      end
+
+      after { log_file.unlink }
+
+      it 'outputs error message and exits Application' do
+        expect { app.run(log_file) }.to output(expected_output).to_stdout.and raise_error(SystemExit)
+      end
+    end
+
+    context 'when log_file contains invalid IP' do
+      let(:expected_output) { "Invalid WebPage or IP detected on line: 2\n" }
+
+      before do
+        log_file.write("/home 111.111.111.111\n")
+        log_file.write('/index invalid_ip')
+        log_file.rewind
+      end
+
+      after { log_file.unlink }
+
+      it 'outputs error message and exits Application' do
+        expect { app.run(log_file) }.to output(expected_output).to_stdout.and raise_error(SystemExit)
+      end
+    end
   end
 end
