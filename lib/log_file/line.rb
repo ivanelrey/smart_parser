@@ -5,12 +5,12 @@ module LogFile
   UnparsableLineError = Class.new(StandardError)
 
   class Line
-    LINE_REGEX = /^(?<web_page>\S+)\s(?<ip>\S+)/.freeze
+    LINE_REGEX = /^\s?+(?<web_page>\S+)\s+(?<ip>\S+)/.freeze
 
     attr_reader :web_page_string, :ip_string
 
     def initialize(line_string)
-      matches = LINE_REGEX.match(line_string.strip)
+      matches = LINE_REGEX.match(line_string)
       raise UnparsableLineError unless matches
 
       @web_page_string = matches[:web_page]
