@@ -13,5 +13,19 @@ module LogFile
       @web_page_string = matches[:web_page]
       @ip_string = matches[:ip]
     end
+
+    def valid?
+      web_page_validator_regex.match?(web_page_string) && ip_validator_regex.match?(ip_string)
+    end
+
+    private
+
+    def web_page_validator_regex
+      %r{^/\S*$}
+    end
+
+    def ip_validator_regex
+      /^\d+\.\d+\.\d+\.\d+$/
+    end
   end
 end

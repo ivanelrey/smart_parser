@@ -34,4 +34,30 @@ RSpec.describe LogFile::Line do
       expect(line.ip_string).to eq(ip)
     end
   end
+
+  describe '#valid?' do
+    let(:line) { described_class.new(valid_line_string) }
+
+    context 'with invalid web_page' do
+      let(:web_page) { 'invalid' }
+
+      it 'returns false' do
+        expect(line.valid?).to be(false)
+      end
+    end
+
+    context 'with invalid IP' do
+      let(:ip) { 'invalid' }
+
+      it 'returns false' do
+        expect(line.valid?).to be(false)
+      end
+    end
+
+    context 'with valid IP and web page' do
+      it 'returns true' do
+        expect(line.valid?).to be(true)
+      end
+    end
+  end
 end
