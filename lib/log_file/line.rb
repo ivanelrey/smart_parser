@@ -15,17 +15,13 @@ module LogFile
     end
 
     def valid?
-      web_page_validator_regex.match?(web_page_string) && ip_validator_regex.match?(ip_string)
+      validators.all? { |validator| validator.valid?(self) }
     end
 
     private
 
-    def web_page_validator_regex
-      %r{^/\S*$}
-    end
-
-    def ip_validator_regex
-      /^\d+\.\d+\.\d+\.\d+$/
+    def validators
+      [Validators::IpValidator.new, Validators::WebPageValidator.new]
     end
   end
 end
