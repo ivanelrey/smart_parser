@@ -90,5 +90,35 @@ RSpec.describe Application do
         expect { app.run(log_file) }.to output(expected_output).to_stdout
       end
     end
+
+    context 'when log_file contains multiple visits' do
+      let(:expected_output) do
+        "Most visited pages:\n"\
+        "/home -> 4\n"\
+        "/about -> 2\n"\
+        "/admin -> 1\n"\
+        "Most uniq visits:\n"\
+        "/home -> 3\n"\
+        "/about -> 2\n"\
+        "/admin -> 1\n"
+      end
+
+      before do
+        log_file.write("/home 111.111.111.111\n")
+        log_file.write("/admin 333.333.333.333\n")
+        log_file.write("/about 111.111.111.111\n")
+        log_file.write("/home 222.222.222.222\n")
+        log_file.write("/home 111.111.111.111\n")
+        log_file.write("/about 222.222.222.222\n")
+        log_file.write("/home 333.333.333.333\n")
+        log_file.rewind
+      end
+
+      after { log_file.unlink }
+
+      it 'outputs correct results ordered correctly' do
+        expect { app.run(log_file) }.to output(expected_output).to_stdout
+      end
+    end
   end
 end

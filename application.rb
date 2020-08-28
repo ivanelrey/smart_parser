@@ -8,7 +8,10 @@ class Application
 
     counter = LogFile::Counter.new
     parse_file(file_name, counter)
-    output_results(counter)
+
+    total_visits = counter.visits_per_web_page.map { |key, value| [key, value[:total_visits]] }.sort_by { |_x, y| -y }
+    uniq_visits = counter.visits_per_web_page.map { |key, value| [key, value[:ip_list].count] }.sort_by { |_x, y| -y }
+    output_results(total_visits, uniq_visits)
   end
 
   private
@@ -26,15 +29,15 @@ class Application
     end
   end
 
-  def output_results(counter)
+  def output_results(total_visits, uniq_visits)
     puts 'Most visited pages:'
-    counter.visits_per_web_page.each do |key, value|
-      puts "#{key} -> #{value[:total_visits]}"
+    total_visits.each do |web_page, count|
+      puts "#{web_page} -> #{count}"
     end
 
     puts 'Most uniq visits:'
-    counter.visits_per_web_page.each do |key, value|
-      puts "#{key} -> #{value[:ip_list].count}"
+    uniq_visits.each do |web_page, count|
+      puts "#{web_page} -> #{count}"
     end
   end
 
