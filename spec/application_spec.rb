@@ -75,5 +75,20 @@ RSpec.describe Application do
         expect { app.run(log_file) }.to output(expected_output).to_stdout.and raise_error(SystemExit)
       end
     end
+
+    context 'when log_file contains one visit' do
+      let(:expected_output) { "Most visited pages:\n/home -> 1\nMost uniq visits:\n/home -> 1\n" }
+
+      before do
+        log_file.write("/home 111.111.111.111\n")
+        log_file.rewind
+      end
+
+      after { log_file.unlink }
+
+      it 'outputs correct results' do
+        expect { app.run(log_file) }.to output(expected_output).to_stdout
+      end
+    end
   end
 end
