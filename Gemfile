@@ -7,5 +7,6 @@ end
 
 group :development do
   gem 'rubocop', '~> 0.89.1'
+  gem 'rubocop-performance', '~> 1.7', '>= 1.7.1'
   gem 'rubocop-rspec', '~> 1.43', '>= 1.43.2'
 end
