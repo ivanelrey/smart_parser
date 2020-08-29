@@ -24,14 +24,12 @@ class Application
 
   def parse_file(counter)
     File.open(file_name).each_with_index do |line, index|
-      begin
-        log_file_line = LogFile::Line.new(line)
-        exit_with_error("Invalid WebPage or IP detected on line: #{index + 1}") unless log_file_line.valid?
+      log_file_line = LogFile::Line.new(line)
+      exit_with_error("Invalid WebPage or IP detected on line: #{index + 1}") unless log_file_line.valid?
 
-        counter.add_web_page_visit(log_file_line.web_page_string, log_file_line.ip_string)
-      rescue LogFile::UnparsableLineError
-        exit_with_error("Unparsable line detected on line: #{index + 1}")
-      end
+      counter.add_web_page_visit(log_file_line.web_page_string, log_file_line.ip_string)
+    rescue LogFile::UnparsableLineError
+      exit_with_error("Unparsable line detected on line: #{index + 1}")
     end
   end
 
